@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Body.css";
 import categories from "./category";
 import axios from "axios";
@@ -36,8 +36,10 @@ function Body() {
     }
   };
   const next = () => {
+    if(count < maxCount - 1) {
     setCount(count + 1);
     setCheck(true);
+    }
   };
   const handleSubmitLeft = async (e) => {
     setBegin(false);
@@ -45,11 +47,11 @@ function Body() {
       e.preventDefault();
       axios.get(`http://localhost:8080/Data`, wordLeft).then((res) => {
         setMeanings(res.data);
-        console.log(res.data);
         setisLoading(true);
       });
     } catch (err) {}
   };
+  const maxCount = meanings.length;
   useEffect(() => {
     if (check) return reset();
   });
@@ -103,8 +105,7 @@ function Body() {
       )}
       {begin && (
         <button className="submit" onClick={handleSubmitLeft}>
-          {" "}
-          Begin{" "}
+          <span>Begin</span>
         </button>
       )}
     </div>
